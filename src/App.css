@@ -1,0 +1,357 @@
+/**
+ * Uygulama Genel Renk Değişkenleri
+ * Bu değişkenler sayesinde tüm temada tek bir noktadan renk değişikliği yapılabilir.
+ */
+:root {
+  --twitter-blue: #1d9bf0;
+  --bg-black: #000000;
+  --border-color: #2f3336;
+  --text-gray: #71767b;
+  --text-white: #e7e9ea;
+}
+
+/* Temel Sayfa Ayarları */
+body {
+  background-color: var(--bg-black);
+  color: var(--text-white);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- ANA LAYOUT (DÜZEN) YAPISI --- */
+
+/** Uygulamanın merkezlenmiş ana taşıyıcısı */
+.app-layout {
+  display: flex;
+  justify-content: center;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/** Sol Menü: Sayfa boyunca sabit (sticky) kalır */
+.sidebar {
+  width: 275px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  border-right: 1px solid var(--border-color);
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/** Ana İçerik Akışı (Feed) */
+.content-area {
+  flex: 1;
+  max-width: 600px;
+  border-right: 1px solid var(--border-color);
+}
+
+/* --- İKON VE MEDYA KONTROLLERİ --- */
+
+/** İkonların orantısız büyümesini engelleyen global kural */
+svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-block;
+}
+
+/** Sidebar ikonları içerik ikonlarından daha büyük olmalıdır */
+.sidebar svg { 
+  width: 26px !important; 
+  height: 26px !important; 
+}
+
+/* --- TWEET OLUŞTURMA ALANI (TWEET BOX) --- */
+
+.tweet-box {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  gap: 12px;
+}
+
+.tweet-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--twitter-blue);
+  padding: 2px;
+  object-fit: cover;
+}
+
+.input-wrapper { flex: 1; }
+
+.tweet-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 19px;
+  outline: none;
+  resize: none;
+  padding: 10px 0;
+  font-family: inherit;
+}
+
+.tweet-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.tool-icons { 
+  display: flex; 
+  gap: 15px; 
+  color: var(--twitter-blue); 
+}
+
+.tweet-btn {
+  background-color: var(--twitter-blue);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tweet-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- TWEET LİSTELEME TASARIMI --- */
+
+.tweet {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tweet-content { flex: 1; display: flex; flex-direction: column; }
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+
+.name { font-weight: 700; }
+.username { color: var(--text-gray); font-size: 14px; }
+
+/** Tweet tarihini sağ üst köşeye yaslar */
+.tweet-date {
+  margin-left: auto;
+  color: var(--text-gray);
+  font-size: 13px;
+}
+
+.tweet-text { 
+  margin: 5px 0 12px 0; 
+  line-height: 1.4; 
+  word-break: break-word; /* Uzun kelimelerin taşmasını engeller */
+}
+
+/* Tweet Alt Etkileşim Butonları */
+.tweet-actions {
+  display: flex;
+  justify-content: space-between;
+  max-width: 425px;
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-gray);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.action-btn:hover { color: var(--twitter-blue); }
+
+/* Beğenilmiş tweetlerde sayının da kırmızı görünmesi için */
+.action-btn.like.liked {
+  color: #f91880 !important;
+}
+
+/* --- GİRİŞ SAYFASI (LOGIN/LANDING) --- */
+
+.login-wrapper {
+  background-color: #000;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin: 0;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  padding: 20px;
+}
+
+/** Giriş sayfasındaki büyük kuş logosu ayarı */
+.login-logo { margin-bottom: 25px; }
+
+.login-logo svg {
+  width: 120px !important;
+  height: 120px !important;
+}
+
+.login-header {
+  font-size: 31px;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+.social-buttons { display: flex; flex-direction: column; gap: 12px; }
+
+.social-btn {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Sosyal butonlar arasındaki "veya" çizgisi */
+.separator {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  color: var(--text-gray);
+}
+
+.separator::before, .separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.separator span { padding: 0 10px; font-size: 14px; }
+
+/* Giriş Form Elemanları */
+.login-form { display: flex; flex-direction: column; gap: 12px; }
+
+.login-input {
+  background-color: black;
+  border: 1px solid #333639;
+  color: white;
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-input:focus {
+  border-color: var(--twitter-blue);
+  outline: none;
+}
+
+.login-btn-primary {
+  background-color: #eff3f4;
+  color: black;
+  border: none;
+  padding: 10px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-btn-outline {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #536471;
+  padding: 10px;
+  border-radius: 9999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-footer {
+  color: var(--text-gray);
+  margin-top: 40px;
+  font-size: 15px;
+}
+
+.login-footer span {
+  color: var(--twitter-blue);
+  cursor: pointer;
+}
+
+.error-text { 
+  color: #f4212e; 
+  margin-bottom: 10px; 
+  font-size: 14px; 
+}
+
+/* Anasayfa Fontu ve Tasarımı */
+.header {
+  padding: 15px;
+  font-size: 20px;
+  font-weight: 800 !important; /* Kalın ve net */
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* RT Butonu Hover ve Aktif (Yeşil) */
+.action-btn.retweet:hover, .rt-active {
+  color: #00ba7c !important;
+}
+
+/* Like Butonu Hover (Kırmızı) */
+.action-btn.like:hover {
+  color: #f91880 !important;
+}
+
+/* Like ikonunun içi dolduğunda rengin tam oturması için */
+.action-btn.like.liked svg, .action-btn.like.liked span {
+  color: #f91880 !important;
+}
+
+/* RT aktif olduğunda yeşil yanması için */
+.action-btn.retweet.rt-active svg, .action-btn.retweet.rt-active span {
+  color: #00ba7c !important;
+}
+
+/* Like ikonunun içi dolsun ve kırmızı kalsın */
+.action-btn.like.liked svg {
+  fill: #f91880 !important;
+  color: #f91880 !important;
+}
+.action-btn.like.liked span {
+  color: #f91880 !important;
+}
+
+/* RT aktifken yeşil yansın */
+.action-btn.retweet.rt-active svg {
+  color: #00ba7c !important;
+  fill: #00ba7c !important;
+}
+.action-btn.retweet.rt-active span {
+  color: #00ba7c !important;
+}
+
+/* Hover durumları */
+.action-btn.like:hover { color: #f91880 !important; }
+.action-btn.retweet:hover { color: #00ba7c !important; }

@@ -1,0 +1,44 @@
+/**
+ * Global Renk Tanımlamaları
+ * Uygulamanın en temel arka plan ve metin renklerini belirler.
+ */
+:root {
+  --bg-color: #000000;      /* Saf siyah arka plan */
+  --text-primary: #e7e9ea;  /* Twitter standart beyaz metin rengi */
+}
+
+/** * Temel Sayfa Yapılandırması
+ * Tarayıcı varsayılan boşluklarını sıfırlar ve font ailesini belirler.
+ */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  /* Sistem fontlarını kullanarak en hızlı yükleme performansını sağlar */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- ÖZELLEŞTİRİLMİŞ KAYDIRMA ÇUBUĞU (SCROLLBAR) --- */
+/* Webkit tabanlı tarayıcılar (Chrome, Edge, Safari) için tasarımı karanlık moda uyarlar. */
+
+/** Kaydırma çubuğunun toplam genişliği */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/** Kaydırma çubuğunun arkasındaki yol (Track) */
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+/** Kaydırma çubuğunun hareket eden kulpu (Thumb) */
+::-webkit-scrollbar-thumb {
+  background: #333; /* Arka plandan biraz daha açık bir gri */
+  border-radius: 5px;
+}
+
+/** Kulp üzerine gelindiğinde (Hover) alacağı renk */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -7,28 +7,25 @@ import ProfileCard from './ProfileCard';
 function TweetList({ auth, user, isProfileMode }) {
   const [tweets, setTweets] = useState([]);
   
-  // Ref kullanarak auth bilgisini hafızada tutuyoruz (Döngüyü engeller)
+  // Auth yapılandırması
   const authConfig = auth ? { auth: auth } : null;
 
-  // Veri çekme fonksiyonu
+  // Tweetleri çeker, sıralar ve formatlar
   const fetchTweets = async () => {
     if (!authConfig) return;
 
     try {
-      // Hangi servis kullanılacak?
+      // Profil modu mu yoksa genel akış mı?
       const promise = (isProfileMode && user?.id)
         ? tweetService.getUserTweets(user.id, authConfig)
         : tweetService.getAllTweets(authConfig);
 
       const res = await promise;
 
-      // --- DEBUG İÇİN LOG (Konsolu kontrol et) ---
-      // console.log("Gelen Tweetler:", res.data);
-
-      // Sıralama
+      // Tarihe göre sırala (Yeniden eskiye)
       const sorted = [...res.data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       
-      // Veriyi formatla
+      // Frontend formatına uygun hale getir (Data Mapping)
       const formattedTweets = sorted.map(t => ({
           id: t.id, 
           content: t.content || "", 
@@ -47,23 +44,24 @@ function TweetList({ auth, user, isProfileMode }) {
       setTweets(formattedTweets);
       
     } catch (err) {
-      console.error("Tweet listesi hatası:", err);
+      console.error("Tweet yükleme hatası:", err);
     }
   };
 
-  // --- SONSUZ DÖNGÜ ÖNLEYİCİ ---
-  // useEffect sadece bu değerler değiştiğinde çalışsın:
+  // Mod veya kullanıcı değişince listeyi yenile
   useEffect(() => {
     fetchTweets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isProfileMode, user?.id]); // authConfig'i bilerek buraya koymuyoruz, loop yapmasın.
+  }, [isProfileMode, user?.id]);
 
   return (
     <div className="content-area">
+      {/* Yapışkan Başlık */}
       <div className="header" style={{position:'sticky', top:0, background:'rgba(0,0,0,0.65)', backdropFilter:'blur(12px)', zIndex:9}}>
           {isProfileMode ? user?.firstName : "Anasayfa"}
       </div>
       
+      {/* Profil Kartı veya Tweet Atma Kutusu */}
       {isProfileMode ? (
           <ProfileCard user={user} />
       ) : (
@@ -76,9 +74,10 @@ function TweetList({ auth, user, isProfileMode }) {
         </div>
       )}
 
+      {/* Tweet Listesi */}
       {tweets.map((tweet, index) => (
         <TweetItem 
-            // ÇÖZÜM: Eğer tweet.id varsa onu kullan, yoksa veya çakışıyorsa index kullan (Hata vermez)
+            // ID yoksa index kullanarak çökmesini engelle (Defansif Kodlama)
             key={tweet.id ? tweet.id : `fallback-${index}`} 
             tweet={tweet} 
             authConfig={authConfig}

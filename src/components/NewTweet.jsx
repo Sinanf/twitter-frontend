@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { FaImage, FaPollH, FaSmile, FaCalendarAlt } from 'react-icons/fa';
+import toast from 'react-hot-toast'; // Toast Eklendi
 import { tweetService } from '../api/tweetService';
-import reactLogo from '../assets/react.svg';
 
 function NewTweet({ user, authConfig, onTweetPosted }) {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const initial = user?.firstName ? user.firstName.charAt(0).toUpperCase() : 'U';
 
   const handlePostTweet = async () => {
     if (!content.trim() || !user?.id) return;
@@ -13,11 +14,12 @@ function NewTweet({ user, authConfig, onTweetPosted }) {
     setLoading(true);
     try {
       await tweetService.postTweet(content.trim(), user.id, authConfig);
-      setContent(""); // Kutuyu temizle
-      onTweetPosted(); // Listeyi yenilemesi için haber ver
+      setContent(""); 
+      toast.success("Tweet gönderildi!"); // BAŞARILI
+      onTweetPosted(); 
     } catch (err) {
-      console.error("Tweet atma hatası:", err);
-      alert("Tweet gönderilemedi.");
+      console.error("Hata:", err);
+      toast.error("Tweet gönderilemedi."); // HATA
     } finally {
       setLoading(false);
     }
@@ -25,29 +27,15 @@ function NewTweet({ user, authConfig, onTweetPosted }) {
 
   return (
     <div className="tweet-box">
-        <img src={reactLogo} className="tweet-avatar" alt="profil" />
+        {user?.avatar ? ( <img src={user.avatar} className="tweet-avatar" alt="profil" /> ) : ( <div className="tweet-avatar" style={{ backgroundColor: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '20px' }}>{initial}</div> )}
         <div className="input-wrapper">
-            <textarea 
-                className="tweet-input" 
-                placeholder="Neler oluyor?!" 
-                value={content} 
-                onChange={(e) => setContent(e.target.value)} 
-            />
+            <textarea className="tweet-input" placeholder="Neler oluyor?!" value={content} onChange={(e) => setContent(e.target.value)} />
             <div className="tweet-tools">
-                <div className="tool-icons">
-                    <FaImage /><FaPollH /><FaSmile /><FaCalendarAlt />
-                </div>
-                <button 
-                    className="tweet-btn" 
-                    onClick={handlePostTweet} 
-                    disabled={loading || !content.trim()}
-                >
-                    {loading ? "..." : "Gönder"}
-                </button>
+                <div className="tool-icons"><FaImage /><FaPollH /><FaSmile /><FaCalendarAlt /></div>
+                <button className="tweet-btn" onClick={handlePostTweet} disabled={loading || !content.trim()}>{loading ? "..." : "Gönder"}</button>
             </div>
         </div>
     </div>
   );
 }
-
 export default NewTweet;

@@ -1,89 +1,46 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { FaTwitter } from 'react-icons/fa';
-import '../App.css'; // Aynı CSS'leri kullanıyoruz
+import toast from 'react-hot-toast'; // Toast
+import { authService } from '../api/authService'; // Servis
+import '../App.css';
 
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      // Backend artık 4 parametre bekliyor: Ad, Soyad, Email, Şifre
-      await axios.post('http://localhost:8080/auth/register', {
-        firstName,
-        lastName,
-        email,
-        password
-      });
+      // SERVİS KULLANIMI
+      await authService.register({ firstName, lastName, email, password });
       
-      alert("Kayıt başarılı! Giriş yapabilirsiniz.");
-      navigate('/login'); // Başarılı olunca Login'e at
+      toast.success("Kayıt başarılı! Giriş yapabilirsiniz."); // TOAST
+      navigate('/login'); 
     } catch (err) {
       console.error("Kayıt hatası:", err);
-      setError("Kayıt yapılamadı. Bilgileri kontrol edin.");
+      toast.error("Kayıt yapılamadı. Bilgileri kontrol edin."); // TOAST
     }
   };
 
   return (
     <div className="login-wrapper">
       <div className="login-container">
-        
-        <div className="login-logo">
-          <FaTwitter size={50} color="#1d9bf0" />
-        </div>
-        
+        <div className="login-logo"><FaTwitter size={40} color="#e7e9ea" /></div>
         <h2 className="login-header">Hesabını oluştur</h2>
         
-        {error && <div className="error-text">{error}</div>}
-
         <form onSubmit={handleRegister} className="login-form">
-          
-          {/* GÜNCELLEME: Ad ve Soyad artık yan yana değil, alt alta ve tam genişlikte */}
-          
-          <input 
-            type="text" 
-            placeholder="Ad" 
-            className="login-input"
-            value={firstName} 
-            onChange={(e) => setFirstName(e.target.value)} 
-            required 
-          />
-
-          <input 
-            type="text" 
-            placeholder="Soyad" 
-            className="login-input"
-            value={lastName} 
-            onChange={(e) => setLastName(e.target.value)} 
-            required 
-          />
-
-          {/* Diğer inputlar aynı kalıyor */}
-          <input 
-            type="email" 
-            placeholder="E-posta" 
-            className="login-input"
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-          
-          <input 
-            type="password" 
-            placeholder="Şifre" 
-            className="login-input"
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
+          <input type="text" placeholder="Ad" className="login-input"
+            value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+          <input type="text" placeholder="Soyad" className="login-input"
+            value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+          <input type="email" placeholder="E-posta" className="login-input"
+            value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type="password" placeholder="Şifre" className="login-input"
+            value={password} onChange={(e) => setPassword(e.target.value)} required />
           
           <button type="submit" className="login-btn-primary">Kaydol</button>
         </form>
@@ -95,5 +52,4 @@ function Register() {
     </div>
   );
 }
-
 export default Register;

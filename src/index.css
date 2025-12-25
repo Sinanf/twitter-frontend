@@ -1,44 +1,54 @@
-/**
- * Global Renk Tanımlamaları
- * Uygulamanın en temel arka plan ve metin renklerini belirler.
- */
+/* Global CSS Değişkenleri ve Sıfırlama 
+*/
 :root {
-  --bg-color: #000000;      /* Saf siyah arka plan */
-  --text-primary: #e7e9ea;  /* Twitter standart beyaz metin rengi */
+  --bg-color: #000000;      /* Arka plan */
+  --text-primary: #e7e9ea;  /* Yazı rengi */
 }
 
-/** * Temel Sayfa Yapılandırması
- * Tarayıcı varsayılan boşluklarını sıfırlar ve font ailesini belirler.
- */
+/* Kritik Optimizasyon: Box-Sizing
+  Padding ve Border'ın kutu boyutunu şişirmesini engeller.
+  Layout'un (Sidebar, Feed) düzgün durması için zorunludur.
+*/
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
   background-color: var(--bg-color);
   color: var(--text-primary);
-  /* Sistem fontlarını kullanarak en hızlı yükleme performansını sağlar */
+  /* Sistem fontları (Performans için en iyisi) */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- ÖZELLEŞTİRİLMİŞ KAYDIRMA ÇUBUĞU (SCROLLBAR) --- */
-/* Webkit tabanlı tarayıcılar (Chrome, Edge, Safari) için tasarımı karanlık moda uyarlar. */
+/* Linklerin altındaki varsayılan çizgiyi kaldır */
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-/** Kaydırma çubuğunun toplam genişliği */
+/* --- SCROLLBAR TASARIMI (Karanlık Mod) --- */
+
+/* Çubuk genişliği */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
-/** Kaydırma çubuğunun arkasındaki yol (Track) */
+/* Çubuk yolu (Arka plan) */
 ::-webkit-scrollbar-track {
   background: #000;
 }
 
-/** Kaydırma çubuğunun hareket eden kulpu (Thumb) */
+/* Hareket eden parça (Thumb) */
 ::-webkit-scrollbar-thumb {
-  background: #333; /* Arka plandan biraz daha açık bir gri */
+  background: #333; 
   border-radius: 5px;
 }
 
-/** Kulp üzerine gelindiğinde (Hover) alacağı renk */
+/* Üzerine gelince */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }

@@ -1,6 +1,5 @@
 /**
  * Uygulama Genel Renk Değişkenleri
- * Bu değişkenler sayesinde tüm temada tek bir noktadan renk değişikliği yapılabilir.
  */
 :root {
   --twitter-blue: #1d9bf0;
@@ -21,7 +20,6 @@ body {
 
 /* --- ANA LAYOUT (DÜZEN) YAPISI --- */
 
-/** Uygulamanın merkezlenmiş ana taşıyıcısı */
 .app-layout {
   display: flex;
   justify-content: center;
@@ -29,7 +27,7 @@ body {
   margin: 0 auto;
 }
 
-/** Sol Menü: Sayfa boyunca sabit (sticky) kalır */
+/* Sol Menü */
 .sidebar {
   width: 275px;
   height: 100vh;
@@ -41,7 +39,7 @@ body {
   flex-direction: column;
 }
 
-/** Ana İçerik Akışı (Feed) */
+/* Ana İçerik */
 .content-area {
   flex: 1;
   max-width: 600px;
@@ -50,20 +48,18 @@ body {
 
 /* --- İKON VE MEDYA KONTROLLERİ --- */
 
-/** İkonların orantısız büyümesini engelleyen global kural */
 svg {
   width: 18px !important;
   height: 18px !important;
   display: inline-block;
 }
 
-/** Sidebar ikonları içerik ikonlarından daha büyük olmalıdır */
 .sidebar svg { 
   width: 26px !important; 
   height: 26px !important; 
 }
 
-/* --- TWEET OLUŞTURMA ALANI (TWEET BOX) --- */
+/* --- TWEET OLUŞTURMA ALANI --- */
 
 .tweet-box {
   padding: 15px;
@@ -145,7 +141,6 @@ svg {
 .name { font-weight: 700; }
 .username { color: var(--text-gray); font-size: 14px; }
 
-/** Tweet tarihini sağ üst köşeye yaslar */
 .tweet-date {
   margin-left: auto;
   color: var(--text-gray);
@@ -155,7 +150,7 @@ svg {
 .tweet-text { 
   margin: 5px 0 12px 0; 
   line-height: 1.4; 
-  word-break: break-word; /* Uzun kelimelerin taşmasını engeller */
+  word-break: break-word;
 }
 
 /* Tweet Alt Etkileşim Butonları */
@@ -176,14 +171,26 @@ svg {
   transition: color 0.2s;
 }
 
+/* Hover ve Aktif Durumlar (Like & RT) */
 .action-btn:hover { color: var(--twitter-blue); }
 
-/* Beğenilmiş tweetlerde sayının da kırmızı görünmesi için */
-.action-btn.like.liked {
-  color: #f91880 !important;
+.action-btn.retweet:hover, 
+.action-btn.retweet.rt-active,
+.action-btn.retweet.rt-active svg,
+.action-btn.retweet.rt-active span {
+  color: #00ba7c !important;
+  fill: #00ba7c !important;
 }
 
-/* --- GİRİŞ SAYFASI (LOGIN/LANDING) --- */
+.action-btn.like:hover, 
+.action-btn.like.liked,
+.action-btn.like.liked svg,
+.action-btn.like.liked span {
+  color: #f91880 !important;
+  fill: #f91880 !important;
+}
+
+/* --- GİRİŞ SAYFASI (LOGIN/REGISTER) --- */
 
 .login-wrapper {
   background-color: #000;
@@ -203,13 +210,8 @@ svg {
   padding: 20px;
 }
 
-/** Giriş sayfasındaki büyük kuş logosu ayarı */
 .login-logo { margin-bottom: 25px; }
-
-.login-logo svg {
-  width: 120px !important;
-  height: 120px !important;
-}
+.login-logo svg { width: 120px !important; height: 120px !important; }
 
 .login-header {
   font-size: 31px;
@@ -234,7 +236,6 @@ svg {
   gap: 10px;
 }
 
-/* Sosyal butonlar arasındaki "veya" çizgisi */
 .separator {
   margin: 15px 0;
   display: flex;
@@ -262,10 +263,7 @@ svg {
   font-size: 16px;
 }
 
-.login-input:focus {
-  border-color: var(--twitter-blue);
-  outline: none;
-}
+.login-input:focus { border-color: var(--twitter-blue); outline: none; }
 
 .login-btn-primary {
   background-color: #eff3f4;
@@ -295,110 +293,53 @@ svg {
   font-size: 15px;
 }
 
-.login-footer span {
-  color: var(--twitter-blue);
-  cursor: pointer;
-}
+.login-footer span { color: var(--twitter-blue); cursor: pointer; }
 
-.error-text { 
-  color: #f4212e; 
-  margin-bottom: 10px; 
-  font-size: 14px; 
-}
+.error-text { color: #f4212e; margin-bottom: 10px; font-size: 14px; }
 
-/* Anasayfa Fontu ve Tasarımı */
+/* Anasayfa Header */
 .header {
   padding: 15px;
   font-size: 20px;
-  font-weight: 800 !important; /* Kalın ve net */
+  font-weight: 800 !important;
   border-bottom: 1px solid var(--border-color);
 }
 
-/* RT Butonu Hover ve Aktif (Yeşil) */
-.action-btn.retweet:hover, .rt-active {
-  color: #00ba7c !important;
-}
+/* --- YORUM (REPLY) ALANI --- */
 
-/* Like Butonu Hover (Kırmızı) */
-.action-btn.like:hover {
-  color: #f91880 !important;
-}
-
-/* Like ikonunun içi dolduğunda rengin tam oturması için */
-.action-btn.like.liked svg, .action-btn.like.liked span {
-  color: #f91880 !important;
-}
-
-/* RT aktif olduğunda yeşil yanması için */
-.action-btn.retweet.rt-active svg, .action-btn.retweet.rt-active span {
-  color: #00ba7c !important;
-}
-
-/* Like ikonunun içi dolsun ve kırmızı kalsın */
-.action-btn.like.liked svg {
-  fill: #f91880 !important;
-  color: #f91880 !important;
-}
-.action-btn.like.liked span {
-  color: #f91880 !important;
-}
-
-/* RT aktifken yeşil yansın */
-.action-btn.retweet.rt-active svg {
-  color: #00ba7c !important;
-  fill: #00ba7c !important;
-}
-.action-btn.retweet.rt-active span {
-  color: #00ba7c !important;
-}
-
-/* Hover durumları */
-.action-btn.like:hover { color: #f91880 !important; }
-.action-btn.retweet:hover { color: #00ba7c !important; }
-
-/* --- YORUM (REPLY) ALANI DÜZENLEMELERİ --- */
-
-/* Yorum kutusunun dış çerçevesi */
 .comment-area {
   margin-top: 5px;
   padding: 12px 16px 12px 16px;
   border-top: 1px solid var(--border-color);
-  background-color: rgba(0, 0, 0, 0.3); /* Hafif ton farkı */
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Yorum kutusu kapsayıcısı */
 .comment-input-wrapper {
   display: flex;
   gap: 12px;
   align-items: flex-start;
-  /* İçerik hizalaması için sol boşluk (Avatar genişliği + gap kadar) */
   margin-left: 4px; 
 }
 
-/* Textarea (Yazı Alanı) Tasarımı */
 .comment-textarea {
-  flex: 1; /* Kalan boşluğu doldur ama taşma! */
+  flex: 1;
   width: 100%;
   min-height: 80px;
   background-color: black;
   border: 1px solid #333;
   border-radius: 12px;
-  color: var(--text-primary);
+  color: var(--text-white);
   padding: 12px;
   font-size: 16px;
   font-family: inherit;
-  resize: none; /* Kullanıcı boyutlandıramasın */
+  resize: none;
   outline: none;
-  box-sizing: border-box; /* TAŞMAYI ENGELLEYEN KOD BU */
+  box-sizing: border-box; 
   transition: border-color 0.2s;
 }
 
-/* Tıklayınca (Focus) çerçeve rengi mavi olsun */
-.comment-textarea:focus {
-  border-color: var(--twitter-blue);
-}
+.comment-textarea:focus { border-color: var(--twitter-blue); }
 
-/* Yorum gönderme butonu hizalaması */
 .comment-footer {
   display: flex;
   justify-content: flex-end;
@@ -406,7 +347,6 @@ svg {
   padding-right: 2px;
 }
 
-/* Yorum Yap butonu (Küçük versiyon) */
 .reply-btn {
   background-color: var(--twitter-blue);
   color: white;
@@ -419,85 +359,32 @@ svg {
   transition: background-color 0.2s;
 }
 
-.reply-btn:hover {
-  background-color: #1a8cd8;
-}
+.reply-btn:hover { background-color: #1a8cd8; }
+.reply-btn:disabled { opacity: 0.5; cursor: default; }
 
-.reply-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-/* --- YORUM LİSTESİ (THREAD) TASARIMI --- */
-
-.comment-item {
-  display: flex;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1px solid #2f3336; /* Tweetler arası çizgi gibi */
-}
-
-.comment-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid #333;
-}
-
-.comment-body {
-  flex: 1;
-}
-
-.comment-header {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-.comment-header .name {
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.comment-header .username, 
-.comment-header .date {
-  color: var(--text-gray);
-}
-
-.comment-text {
-  font-size: 15px;
-  color: var(--text-primary);
-  line-height: 1.4;
-}
-
-/* Mevcut comment-area stilinin altına ekle */
+/* --- YORUM LİSTESİ (THREAD) --- */
 
 .comments-list {
     margin-top: 10px;
-    /* Yorumlar tweetin biraz içinden başlasın diye padding */
-    padding-left: 50px; 
+    padding-left: 50px; /* Thread görünümü için girinti */
 }
 
 .comment-item {
     display: flex;
     gap: 12px;
     padding: 12px 0;
-    border-top: 1px solid #2f3336; /* Çizgi ile ayır */
+    border-top: 1px solid #2f3336;
 }
 
 .comment-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    /* Avatarın etrafına hafif gri çizgi */
     border: 1px solid #333; 
+    object-fit: cover;
 }
 
-.comment-body {
-    flex: 1;
-}
+.comment-body { flex: 1; }
 
 .comment-header {
     display: flex;
@@ -509,18 +396,18 @@ svg {
 
 .comment-header .name {
     font-weight: 700;
-    color: #e7e9ea;
+    color: var(--text-white);
 }
 
 .comment-header .username,
 .comment-header .date {
-    color: #71767b;
+    color: var(--text-gray);
     font-size: 13px;
 }
 
 .comment-text {
-    color: #e7e9ea;
+    color: var(--text-white);
     font-size: 15px;
     line-height: 1.4;
-    white-space: pre-wrap; /* Satır atlamalarını koru */
+    white-space: pre-wrap;
 }

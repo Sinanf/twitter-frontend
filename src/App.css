@@ -355,3 +355,172 @@ svg {
 /* Hover durumları */
 .action-btn.like:hover { color: #f91880 !important; }
 .action-btn.retweet:hover { color: #00ba7c !important; }
+
+/* --- YORUM (REPLY) ALANI DÜZENLEMELERİ --- */
+
+/* Yorum kutusunun dış çerçevesi */
+.comment-area {
+  margin-top: 5px;
+  padding: 12px 16px 12px 16px;
+  border-top: 1px solid var(--border-color);
+  background-color: rgba(0, 0, 0, 0.3); /* Hafif ton farkı */
+}
+
+/* Yorum kutusu kapsayıcısı */
+.comment-input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  /* İçerik hizalaması için sol boşluk (Avatar genişliği + gap kadar) */
+  margin-left: 4px; 
+}
+
+/* Textarea (Yazı Alanı) Tasarımı */
+.comment-textarea {
+  flex: 1; /* Kalan boşluğu doldur ama taşma! */
+  width: 100%;
+  min-height: 80px;
+  background-color: black;
+  border: 1px solid #333;
+  border-radius: 12px;
+  color: var(--text-primary);
+  padding: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  resize: none; /* Kullanıcı boyutlandıramasın */
+  outline: none;
+  box-sizing: border-box; /* TAŞMAYI ENGELLEYEN KOD BU */
+  transition: border-color 0.2s;
+}
+
+/* Tıklayınca (Focus) çerçeve rengi mavi olsun */
+.comment-textarea:focus {
+  border-color: var(--twitter-blue);
+}
+
+/* Yorum gönderme butonu hizalaması */
+.comment-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding-right: 2px;
+}
+
+/* Yorum Yap butonu (Küçük versiyon) */
+.reply-btn {
+  background-color: var(--twitter-blue);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reply-btn:hover {
+  background-color: #1a8cd8;
+}
+
+.reply-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* --- YORUM LİSTESİ (THREAD) TASARIMI --- */
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #2f3336; /* Tweetler arası çizgi gibi */
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #333;
+}
+
+.comment-body {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.comment-header .name {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.comment-header .username, 
+.comment-header .date {
+  color: var(--text-gray);
+}
+
+.comment-text {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* Mevcut comment-area stilinin altına ekle */
+
+.comments-list {
+    margin-top: 10px;
+    /* Yorumlar tweetin biraz içinden başlasın diye padding */
+    padding-left: 50px; 
+}
+
+.comment-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid #2f3336; /* Çizgi ile ayır */
+}
+
+.comment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    /* Avatarın etrafına hafif gri çizgi */
+    border: 1px solid #333; 
+}
+
+.comment-body {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.comment-header .name {
+    font-weight: 700;
+    color: #e7e9ea;
+}
+
+.comment-header .username,
+.comment-header .date {
+    color: #71767b;
+    font-size: 13px;
+}
+
+.comment-text {
+    color: #e7e9ea;
+    font-size: 15px;
+    line-height: 1.4;
+    white-space: pre-wrap; /* Satır atlamalarını koru */
+}

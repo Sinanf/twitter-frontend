@@ -6,38 +6,51 @@ import { FcGoogle } from 'react-icons/fc';
 import '../App.css';
 
 /**
- * Login Bileşeni: Kullanıcı kimlik doğrulama işlemlerini ve giriş arayüzünü yönetir.
- * @param {Function} onLogin - Başarılı giriş sonrası kullanıcı bilgilerini üst bileşene (App.jsx) ileten fonksiyon.
+ * Login Bileşeni: Güncellenmiş versiyon.
+ * Artık /auth/login endpoint'ine POST isteği atıyor.
  */
 function Login({ onLogin }) {
   // --- LOCAL STATE (YEREL DURUM) ---
-  const [email, setEmail] = useState("");     // Kullanıcı e-posta girişi
-  const [password, setPassword] = useState("");  // Kullanıcı şifre girişi
-  const [error, setError] = useState("");      // Hata mesajlarını tutan durum
-  const navigate = useNavigate();              // Sayfa yönlendirme hook'u
+  const [email, setEmail] = useState("");     
+  const [password, setPassword] = useState("");  
+  const [error, setError] = useState("");      
+  const navigate = useNavigate();              
 
   /**
    * Giriş Formu Gönderimi (Submit Handler)
-   * Formun varsayılan yenilenme davranışını durdurur ve backend ile haberleşir.
    */
   const handleLogin = async (e) => {
-    e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller
+    e.preventDefault();
+    setError(""); // Önceki hataları temizle
+
     try {
-      // Basic Auth için kimlik bilgilerini hazırlar
+      // 1. DEĞİŞİKLİK: Artık GET değil POST yapıyoruz.
+      // Backend'deki 'LoginRequest' DTO'su { email, password } bekliyor.
+      const res = await axios.post('http://localhost:8080/auth/login', {
+        email: email,       // BURASI ÇOK ÖNEMLİ: 'username' değil 'email' gönderiyoruz!
+        password: password
+      });
+      
+      // Giriş başarılıysa Backend bize User objesini (res.data) döner.
+      
+      // 2. Sonraki isteklerde (Tweet atma vb.) kullanmak için şifreyi saklıyoruz.
+      // Çünkü SecurityConfig 'httpBasic' kullanıyor.
       const authData = { username: email, password: password };
+
+      // 3. App.jsx'e durumu bildir
+      onLogin(authData, res.data); 
       
-      // Backend'deki '/auth/me' uç noktasına, kimlik bilgileriyle GET isteği atarak kullanıcıyı doğrular
-      const userResponse = await axios.get('http://localhost:8080/auth/me', { auth: authData });
-      
-      // Doğrulama başarılıysa:
-      // 1. Üst bileşendeki state'i (auth ve kullanıcı verisi) günceller
-      onLogin(authData, userResponse.data); 
-      // 2. Kullanıcıyı ana sayfaya yönlendirir
+      // 4. Yönlendir
       navigate('/');
+
     } catch (err) {
-      // Doğrulama başarısızsa hata detayını loglar ve kullanıcıya uyarı gösterir
       console.error("Giriş başarısız:", err);
-      setError("Giriş başarısız. Bilgilerinizi kontrol edin.");
+      // Hata mesajını kullanıcıya göster
+      if (err.response && err.response.status === 401) {
+        setError("E-posta veya şifre hatalı.");
+      } else {
+        setError("Giriş yapılamadı. Sunucu hatası.");
+      }
     }
   };
 
@@ -45,31 +58,15 @@ function Login({ onLogin }) {
     <div className="login-wrapper">
       <div className="login-container">
         
-        {/* LOGO BÖLÜMÜ: Marka kimliği */}
+        {/* LOGO BÖLÜMÜ */}
         <div className="login-logo">
-          <FaTwitter size={120} color="#1d9bf0" />
+          <FaTwitter size={40} color="#e7e9ea" /> {/* Logo boyutunu ve rengini CSS ile uyumlu yaptım */}
         </div>
         
         <h2 className="login-header">Twitter'a giriş yap</h2>
         
-        {/* SOSYAL GİRİŞ BUTONLARI: (Şu an için sadece görsel tasarım) */}
-        <div className="social-buttons">
-          <button className="social-btn google-btn">
-            <FcGoogle size={22} /> Google ile kaydolun
-          </button>
-          
-          <button className="social-btn apple-btn">
-            <FaApple size={22} color="black" /> Apple ile kaydolun
-          </button>
-        </div>
-
-        {/* AYRAÇ: Sosyal giriş ve Form arası görsel bölücü */}
-        <div className="separator">
-          <span>veya</span>
-        </div>
-
-        {/* HATA BİLDİRİMİ: Sadece hata varsa görüntülenir */}
-        {error && <div className="error-text">{error}</div>}
+        {/* HATA BİLDİRİMİ */}
+        {error && <div className="error-text" style={{color: '#f4212e', marginBottom: '15px'}}>{error}</div>}
 
         {/* GİRİŞ FORMU */}
         <form onSubmit={handleLogin} className="login-form">
@@ -90,13 +87,11 @@ function Login({ onLogin }) {
             required 
           />
           
-          {/* İLERİ BUTONU: Form submit işlemini tetikler */}
           <button type="submit" className="login-btn-primary">İleri</button>
           
-          <button type="button" className="login-btn-outline">Şifreni mi unuttun?</button>
+          <button type="button" className="login-btn-outline" style={{marginTop:'10px'}}>Şifreni mi unuttun?</button>
         </form>
 
-        {/* KAYIT YÖNLENDİRMESİ */}
         <p className="login-footer">
           Hesabın yok mu? <span onClick={() => navigate('/register')}>Kaydol</span>
         </p>
